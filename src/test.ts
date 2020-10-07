@@ -22,21 +22,26 @@
 // };
 //
 // type ArrayElementType<A> = A extends readonly (infer T)[] ? T : never
-
-// type Index = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+//
+// type TupleOf<A extends number, R extends number[] = []> =
+//   R['length'] extends A ? R : TupleOf<A, [...R, R['length']]>;
+//
+// type Integers = TupleOf<45>;
+//
+// type Indexes = Integers[number];
 //
 // type PathFinder<T, Key extends keyof T = keyof T> = Key extends string
 //   ? T[Key] extends (string | boolean | number | symbol)[]
-//     ? `${Key}.${Index}`
+//     ? `${Key}.${Indexes}`
 //     : T[Key] extends object[]
-//       ? `${Key}.${Index}.${PathFinder<ArrayElementType<T[Key]>>}`
+//       ? `${Key}.${Indexes}.${PathFinder<ArrayElementType<T[Key]>>}`
 //       : T[Key] extends Record<string, any>
 //         ? `${Key}.${PathFinder<T[Key]>}`
 //         : Key
 //   : never;
-
+//
 // type Test1 = PathFinder<Data>;
-
+//
 // function register(name: Test1) {
 //   console.log(name)
 // }
